@@ -40,9 +40,11 @@ class Reddit():
         )
 
     def start(self):
+        helpers.print_animated_text("Scrapping...")
         self.get_submissions()
         self.parse_submissions()
         self.write_output()
+        helpers.done()
 
     def write_output(self, path="OUTPUT_DIR"):
         """
@@ -79,7 +81,7 @@ class Reddit():
 
             self.write_separator(out)
 
-    def parse_submissions(self, subs=None, regex=None):
+    def parse_submissions(self):
         """
         Parses each submission according to given regex
         """
