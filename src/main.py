@@ -1,6 +1,7 @@
 from reddit import Reddit
 from time import time
 
+
 TARGET_SUBREDDIT = "GameDeals"
 
 
