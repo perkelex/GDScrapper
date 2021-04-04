@@ -33,10 +33,10 @@ def loading(text, count):
 def countdown(text, count):
     while count > 0:
         if DONE_FLAG:
-            sys.stdout.write(f'\r{text}    ')  # clear countdown timer symbol
+            sys.stdout.write(f'\r{text}    ')  # clear countdown timer symbol...
             sys.stdout.flush()
             break
-        sys.stdout.write(f'\r{text} {count}')
+        sys.stdout.write(f'\r{text} {count} ')  # some buffer to overwrite trailing numbers...
         sys.stdout.flush()
         time.sleep(1)
         count -= 1

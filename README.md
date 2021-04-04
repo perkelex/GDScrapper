@@ -5,4 +5,5 @@ TODO:
 
 - ~~add exit status message~~
 - [maybe] html output
-- add run scripts for linux and windows
+- ~~add run scripts for linux and windows~~
+- implement a better loading/countdown animation
