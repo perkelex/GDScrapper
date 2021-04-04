@@ -18,7 +18,7 @@ def contains_forbidden_flairs(submission):
                 return True
         return False
 
-def animate(text):
+def loading(text, count):
     for c in itertools.cycle(['|', '/', '-', '\\']):
         if DONE_FLAG:
             sys.stdout.write(f'\r{text}  ')  # clear loading-simulaing symbol
@@ -30,13 +30,26 @@ def animate(text):
     sys.stdout.write('\nDone!\n')
     sys.stdout.flush()
 
-def print_animated_text(text):
+def countdown(text, count):
+    while count > 0:
+        if DONE_FLAG:
+            sys.stdout.write(f'\r{text}    ')  # clear countdown timer symbol
+            sys.stdout.flush()
+            break
+        sys.stdout.write(f'\r{text} {count}')
+        sys.stdout.flush()
+        time.sleep(1)
+        count -= 1
+    sys.stdout.write('\n')
+    sys.stdout.flush()
+
+def print_animated_text(text, count=0, func=loading):
     """
-    Prints a text followed by a loading animation. MUST be used in pair with done()
+    Prints a text followed by a kind of animation. MUST be used in pair with done()
     """
     global DONE_FLAG
     DONE_FLAG = False
-    t = threading.Thread(target=animate, args=(text,), daemon=True)
+    t = threading.Thread(target=func, args=(text, count,), daemon=True)
     t.start()
 
 def done():

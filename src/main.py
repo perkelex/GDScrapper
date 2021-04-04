@@ -1,4 +1,5 @@
 import argparse
+import helpers
 from reddit import Reddit
 from time import time, sleep
 
@@ -21,7 +22,7 @@ def main():
     sleep(0.5)
 
     print(f"Execution took {int(execTime)} seconds")
-
+    helpers.print_animated_text("Exiting in ", args.sleep, helpers.countdown)
     sleep(args.sleep)
 
 if __name__ == "__main__":
