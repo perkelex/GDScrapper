@@ -1,1 +1,2 @@
 # GDScrapper
+Scraps like hell!
