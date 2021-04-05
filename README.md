@@ -7,3 +7,4 @@ TODO:
 - [maybe] html output
 - ~~add run scripts for linux and windows~~
 - implement a better loading/countdown animation
+- implement watchlist: gmaes that stand out!
