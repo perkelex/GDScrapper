@@ -2,21 +2,54 @@ import itertools
 import threading
 import time
 import sys
+import json
+import paths
 
 
-FORBIDDEN_FLAIRS = ["Console", "US Only", "Expired"]
 DONE_FLAG = False
 
 
-def contains_forbidden_flairs(submission):
+class Filter:
+
+    def __init__(self, watchlist=False):
+        super().__init__()
+        self.WATCHLIST = watchlist
+        self.forbidden_flairs = parse_config("forbidden_flairs")
+
+    def contains_forbidden_flairs(self, submission):
         """
         Checks submission flair for values that would make the submission uninteresting.
         """
 
-        for flair in FORBIDDEN_FLAIRS:
+        if submission.link_flair_text is None:
+            return False
+
+        for flair in self.forbidden_flairs:
             if flair in submission.link_flair_text:
                 return True
         return False
+
+    def filter_flair(self, submission):
+        if not self.contains_forbidden_flairs(submission):
+            return True
+        return False
+
+    def filter_watchlist(self, submission, watchlist):
+        if not self.filter_flair(submission):
+            return False
+
+        for game_names in watchlist:
+            for game_name_variant in game_names:
+                if game_name_variant in submission.title:
+                    return True
+        return False
+
+    def filter(self, submission, watchlist):
+        if self.WATCHLIST:
+            return self.filter_watchlist(submission, watchlist)
+        else:
+            return self.filter_flair(submission)
+
 
 def loading(text, count):
     for c in itertools.cycle(['|', '/', '-', '\\']):
@@ -55,3 +88,7 @@ def print_animated_text(text, count=0, func=loading):
 def done():
     global DONE_FLAG
     DONE_FLAG = True
+
+def parse_config(key):
+    with open(paths.CONFIG_FILE, "r") as config:
+        return json.load(config)[key]

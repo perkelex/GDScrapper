@@ -24,6 +24,7 @@ def main():
     print(f"Execution took {int(execTime)} seconds")
     helpers.print_animated_text("Exiting in", args.sleep, helpers.countdown)
     sleep(args.sleep)
+    helpers.done()
 
 if __name__ == "__main__":
     main()

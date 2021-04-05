@@ -1,22 +1,21 @@
 import praw
 import re
 import helpers
+import paths
 from decouple import config
 from requests import Session
-from pathlib2 import Path
-
-
-OUTPUT_DIR = Path(__file__).parent.parent.absolute() / "output"
-OUTPUT_FILE = OUTPUT_DIR / "output.txt"
 
 
 class Reddit():
-    def __init__(self, subreddit, output_file_name=OUTPUT_FILE):
+    def __init__(self, subreddit, output_file_name=paths.OUTPUT_FILE):
         super().__init__()
+        self.filter = helpers.Filter(watchlist=True)
         self.session = Session()
         self.reddit = self.init_connection()
         self.subreddit = subreddit
         self.output_file_name = output_file_name
+        self.watchlist = helpers.parse_config("watchlist")
+        self.watchlist_hits = []
         self.submissions = []
         self.subs_100_off = []
         self.subs_90_off = []
@@ -46,7 +45,7 @@ class Reddit():
         self.write_output()
         helpers.done()
 
-    def write_output(self, path="OUTPUT_DIR"):
+    def write_output(self, path=f"{paths.OUTPUT_FILE}"):
         """
         Writes the links to the submissions whose title passed the parsing criteria to file.
         """
@@ -56,6 +55,11 @@ class Reddit():
             return
 
         with open(f"{self.output_file_name}", "w") as out:
+            self.write_header(out, "Watchlist hits")
+            self.write_entries(out, self.watchlist_hits)
+
+            self.write_separator(out)
+
             self.write_header(out, r"100% off | FREE")
             self.write_entries(out, self.subs_100_off)
 
@@ -104,11 +108,10 @@ class Reddit():
         """
 
         for submission in self.reddit.subreddit(self.subreddit).new(limit=1000):
-            if submission.link_flair_text is None:
+            if self.filter.filter_watchlist(submission, self.watchlist):
+                self.watchlist_hits.append(submission)
+            elif self.filter.filter_flair(submission):
                 self.submissions.append(submission)
-            else:
-                if not helpers.contains_forbidden_flairs(submission):
-                    self.submissions.append(submission)
 
     def get_reddit_url(self):
         return self.reddit.config.reddit_url
@@ -126,3 +129,6 @@ class Reddit():
 
     def write_header(self, handler, text):
         handler.write(f"{text}\n\n")
+
+    def write_watchlist_hits(self):
+        pass
