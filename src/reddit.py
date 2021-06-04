@@ -54,7 +54,7 @@ class Reddit():
             print("ERROR: Submission list is empty!")
             return
 
-        with open(f"{self.output_file_name}", "w") as out:
+        with open(f"{self.output_file_name}", "w", encoding='utf-8') as out:
             self.write_header(out, "Watchlist hits")
             self.write_entries(out, self.watchlist_hits)
 
@@ -108,6 +108,7 @@ class Reddit():
         """
 
         for submission in self.reddit.subreddit(self.subreddit).new(limit=1000):
+            # print(submission.permalink)
             if self.filter.filter_watchlist(submission, self.watchlist):
                 self.watchlist_hits.append(submission)
             elif self.filter.filter_flair(submission):
@@ -120,6 +121,7 @@ class Reddit():
         count = 0
         for sub in sub_list:
             count += 1
+            flair = None
             handler.write(f"{count}. [{sub.link_flair_text}]{sub.title}\n")
             handler.write(f"{count}. {self.get_reddit_url()}{sub.permalink}\n")
             handler.write(f"{count}. {sub.url}\n\n")
