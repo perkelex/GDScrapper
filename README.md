@@ -13,3 +13,5 @@ Scraps like hell!
 - [x] Implement watchlist: games that stand out!
 - [x] Make program run either in "i dont know what i want, show me everything" mode or "watchlist" mode or both.
 - [ ] Decouple watchlist from config.
+- [ ] Add date of submission in the output.
+- [ ] Add descriptions of each field for submissions in  output.

@@ -108,7 +108,6 @@ class Reddit():
         """
 
         for submission in self.reddit.subreddit(self.subreddit).new(limit=1000):
-            # print(submission.permalink)
             if self.filter.filter_watchlist(submission, self.watchlist):
                 self.watchlist_hits.append(submission)
             elif self.filter.filter_flair(submission):
