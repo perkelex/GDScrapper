@@ -1,1 +1,1 @@
-start "" py ./src/main.py %*
+start "" py ./src/gdscrapper.py %*

@@ -1,3 +1,3 @@
 #!/bin/bash
 
-py ./src/main.py $@
+py ./src/gdscrapper.py $@
