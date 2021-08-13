@@ -133,3 +133,5 @@ output/
 
 # ide
 .vscode
+
+config/config.json
