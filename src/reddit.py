@@ -2,6 +2,7 @@ import praw
 import re
 import helpers
 import paths
+from watchlist import WatchlistEntry
 from decouple import config
 from requests import Session
 
@@ -15,7 +16,7 @@ class Reddit():
         self.subreddit = subreddit
         self.output_file_name = output_file_name
         self.watchlist = helpers.parse_config("watchlist")
-        self.watchlist_hits = []
+        self.watchlist_hits: List[WatchlistEntry] = []
         self.submissions = []
         self.subs_100_off = []
         self.subs_90_off = []
@@ -56,7 +57,7 @@ class Reddit():
 
         with open(f"{self.output_file_name}", "w", encoding='utf-8') as out:
             self.write_header(out, "Watchlist hits")
-            self.write_entries(out, self.watchlist_hits)
+            self.write_watchlist_hits(out)
 
             self.write_separator(out)
 
@@ -109,7 +110,7 @@ class Reddit():
 
         for submission in self.reddit.subreddit(self.subreddit).new(limit=1000):
             if self.filter.filter_watchlist(submission, self.watchlist):
-                self.watchlist_hits.append(submission)
+                self.watchlist_hits.append(WatchlistEntry(submission))
             elif self.filter.filter_flair(submission):
                 self.submissions.append(submission)
 
@@ -120,7 +121,7 @@ class Reddit():
         count = 0
         for sub in sub_list:
             count += 1
-            flair = None
+            handler.write(f"{count}. {helpers.get_nice_time(sub.created_utc)}\n")
             handler.write(f"{count}. [{sub.link_flair_text}]{sub.title}\n")
             handler.write(f"{count}. {self.get_reddit_url()}{sub.permalink}\n")
             handler.write(f"{count}. {sub.url}\n\n")
@@ -131,5 +132,12 @@ class Reddit():
     def write_header(self, handler, text):
         handler.write(f"{text}\n\n")
 
-    def write_watchlist_hits(self):
-        pass
+    def write_watchlist_hits(self, handler):
+        count = 0
+        for sub in self.watchlist_hits:
+            count += 1
+            handler.write(f"{count}. {sub.keyword}\n")
+            handler.write(f"{count}. {helpers.get_nice_time(sub.created)}\n")
+            handler.write(f"{count}. [{sub.flair}]{sub.title}\n")
+            handler.write(f"{count}. {self.get_reddit_url()}{sub.permalink}\n")
+            handler.write(f"{count}. {sub.url}\n\n")

@@ -4,6 +4,7 @@ import time
 import sys
 import json
 import paths
+from datetime import datetime
 
 
 DONE_FLAG = False
@@ -41,6 +42,7 @@ class Filter:
         for game_names in watchlist:
             for game_name_variant in game_names:
                 if game_name_variant in submission.title:
+                    submission.keyword = game_name_variant
                     return True
         return False
 
@@ -92,3 +94,6 @@ def done():
 def parse_config(key):
     with open(paths.CONFIG_FILE, "r") as config:
         return json.load(config)[key]
+
+def get_nice_time(utc_time):
+    return datetime.fromtimestamp(utc_time).strftime("%Y-%m-%d")
