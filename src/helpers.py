@@ -96,4 +96,4 @@ def parse_config(key):
         return json.load(config)[key]
 
 def get_nice_time(utc_time):
-    return datetime.fromtimestamp(utc_time).strftime("%Y-%m-%d")
+    return datetime.fromtimestamp(utc_time).strftime("%d-%m-%Y")
