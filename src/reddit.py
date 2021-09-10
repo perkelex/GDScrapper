@@ -5,6 +5,8 @@ import paths
 from watchlist import WatchlistEntry
 from decouple import config
 from requests import Session
+from typing import List
+from datetime import datetime
 
 
 class Reddit():
@@ -56,6 +58,7 @@ class Reddit():
             return
 
         with open(f"{self.output_file_name}", "w", encoding='utf-8') as out:
+            out.write("Scrapped on: " + datetime.now().strftime("%Y.%m.%d %H:%M:%S") + '\n')
             self.write_header(out, "Watchlist hits")
             self.write_watchlist_hits(out)
 
