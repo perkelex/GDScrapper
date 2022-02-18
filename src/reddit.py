@@ -2,6 +2,7 @@ import praw
 import re
 import helpers
 import paths
+from htmlWrapper import createTable
 from watchlist import WatchlistEntry
 from decouple import config
 from requests import Session
@@ -46,6 +47,7 @@ class Reddit():
         self.get_submissions()
         self.parse_submissions()
         self.write_output()
+        self.write_output_html()
         helpers.done()
 
     def write_output(self, path=f"{paths.OUTPUT_FILE}"):
@@ -88,6 +90,12 @@ class Reddit():
             self.write_entries(out, self.subs_60_off)
 
             self.write_separator(out)
+
+    def write_output_html(self, path=f"{paths.OUTPUT_FILE_HTML}"):
+        with open(f"{path}", "w") as out:
+            # out.write("Scrapped on: " + datetime.now().strftime("%Y.%m.%d %H:%M:%S") + '\n')
+            out.write(createTable(self.subs_100_off))
+
 
     def parse_submissions(self):
         """
