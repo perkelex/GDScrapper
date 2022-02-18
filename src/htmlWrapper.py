@@ -1,3 +1,4 @@
+from datetime import datetime
 from typing import List
 import helpers
 
@@ -11,8 +12,8 @@ def style():
         "<style>" + \
             "table, th, td {" + \
             "border: 1px solid black;" + \
-            "border-collapse: collapse;" + \
-            "}" + \
+            "border-collapse: collapse;}" + \
+            "table {margin-left:auto;margin-right:auto;}" + \
         "</style>"
 
 def tableHeadings():
@@ -26,6 +27,9 @@ def tableHeadings():
             "<th>Website URL</th>" + \
          "</tr>"
 
+def bodyBeforeTable():
+    return "Scrapped on: " + datetime.now().strftime("%Y.%m.%d %H:%M:%S")
+
 def tableRow(count: int, submission):
     return \
         "<tr>" + \
@@ -38,7 +42,7 @@ def tableRow(count: int, submission):
         "</tr>"
 
 def createTable(content: List):
-    ret = "<!DOCTYPE html><html><head>" + style() + "</head><body><table>" + tableHeadings()
+    ret = "<!DOCTYPE html><html><head>" + style() + "</head><body>" + bodyBeforeTable() + "<table>" + tableHeadings()
     count = 0
     for sub in content:
         count += 1
