@@ -7,11 +7,11 @@ Scraps like hell!
 # TODO:
 
 - [x] Add exit status message.
-- [ ] [maybe] Nice HTML output.
+- [x] [maybe] Nice HTML output.
 - [x] Add run scripts for linux and windows.
 - [x] Implement a better loading/countdown animation.
 - [x] Implement watchlist: games that stand out!
 - [x] Make program run either in "i dont know what i want, show me everything" mode or "watchlist" mode or both.
 - [ ] Decouple watchlist from config.
-- [ ] Add date of submission in the output.
-- [ ] Add descriptions of each field for submissions in  output.
+- [x] Add date of submission in the output.
+- [ ] Add descriptions of each field for submissions in output.
